@@ -15,14 +15,11 @@ import lombok.Setter;
 @Setter
 public class UserProductCart extends BaseEntity {
 	
-	
-	private Long cartid;
-	
 	@OneToOne
 	@JoinColumn(name="user_id",referencedColumnName = "id")
 	private Users users;
 	
-	@OneToMany
+	@OneToOne
 	@JoinColumn(name = "product_id",referencedColumnName = "id")
 	private Products products;
 }
