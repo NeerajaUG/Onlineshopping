@@ -3,23 +3,24 @@ package com.livares.intern.product.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.livares.intern.product.dto.categoryDTO;
 import com.livares.intern.product.models.Category;
 
 public interface CategoryServices {
 	
 	//retrieving all category
-	public List <Category> getAllCategories();
+	public List<categoryDTO> getAllCategories();
 	
 	//retrieving specific category
-	public Optional <Category> getCategoryById(Long id);
+	public List<categoryDTO> getCategoryById(Long id);
 	
 	//creating a new category field
-	public Category createCategory(Category category);
+	public Category createCategory(categoryDTO category);
 	
 	//deleting  a category
-	public void deleteCategotyById(Long id);
+	public void deleteCategoryById(Long id);
 	
 	//updating category filed
-	public Category updateCategory(Long id,Category category);	
+	public Category updateCategory(Long id,categoryDTO category);	
 
 }

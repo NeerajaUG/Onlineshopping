@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.livares.intern.product.dto.UsersDTO;
@@ -15,6 +16,9 @@ import com.livares.intern.product.services.UserService;
 public class UsersServiceImpl implements UserService {
 	@Autowired
 	private UsersRepository usersRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	// retrieving all Users in the table
 	@Override
@@ -59,6 +63,23 @@ public class UsersServiceImpl implements UserService {
 			return usersRepository.save(existingUser);
 		} else {
 			throw new RuntimeException("User not found with id: " + id);
+		}
+	}
+	
+	//register a new user
+	@Override
+	public Users registerNewUser(UsersDTO user) {
+		Optional<Users> optionalUser = usersRepository.findByUsername(user.getUsername());
+		if(optionalUser.isPresent())
+				throw new RuntimeException("User is an already existing user...");
+		else{
+			Users registernewUser = new Users(); 
+			registernewUser.setFirstName(user.getFirstName());
+			registernewUser.setLastName(user.getLastName());
+			registernewUser.setUsername(user.getUsername());
+			registernewUser.setPassword(passwordEncoder.encode(user.getPassword()));
+			return usersRepository.save(registernewUser);
+		
 		}
 	}
 }

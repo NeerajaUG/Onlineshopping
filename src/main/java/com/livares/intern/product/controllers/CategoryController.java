@@ -18,41 +18,48 @@ import org.springframework.web.bind.annotation.RestController;
 import com.livares.intern.product.dto.categoryDTO;
 import com.livares.intern.product.models.Category;
 import com.livares.intern.product.models.Products;
+import com.livares.intern.product.response.ResponseHandler;
+import com.livares.intern.product.services.CategoryServices;
 import com.livares.intern.product.services.impl.CategoryServiceImpl;
 
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
 	@Autowired
-	CategoryServiceImpl categoryService;
+	CategoryServiceImpl categoryServiceImpl;
 	
 	@GetMapping
-	public ResponseEntity<List<Category>> getAllCategory(){
-		return (ResponseEntity<List<Category>>) categoryService.getAllCategories();
+	public ResponseEntity<Object> getAllCategory(){
+		List<categoryDTO> category = categoryServiceImpl.getAllCategories();
+		return ResponseHandler.generateResponse("All Category", HttpStatus.OK,category);
+		//return new ResponseEntity<>(categoryServiceImpl.getAllCategories(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-    public ResponseEntity<Optional> getCategoryById(@PathVariable Long id) {
-        Optional<Category> category = categoryService.getCategoryById(id);
-        return new ResponseEntity<>(category, HttpStatus.OK);
+    public ResponseEntity<Object> getCategoryById(@PathVariable Long id) {
+		List<categoryDTO> category = categoryServiceImpl.getCategoryById(id);
+		if(category!=null)
+			return ResponseHandler.generateResponse("Category by Id", HttpStatus.OK,category);
+		else 
+			return ResponseHandler.generateResponse("Specified category does not exists", HttpStatus.NOT_FOUND,category);
     }
 	
 	@PostMapping("/create")
-    public ResponseEntity<Category> createCategory(@RequestBody categoryDTO category) {
-	 Category  createCategory = categoryService.createCategory(category);
-        return new ResponseEntity<>(createCategory, HttpStatus.CREATED);
+    public ResponseEntity<Object> createCategory(@RequestBody categoryDTO category) {
+	 Category  createCategory = categoryServiceImpl.createCategory(category);
+        return ResponseHandler.generateResponse("Category created", HttpStatus.CREATED, createCategory);
     }
 	
 	@PutMapping("/update/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody categoryDTO category) {
-	 Category updatedcategory = categoryService.updateCategory(id, category);
-        return new ResponseEntity<>(updatedcategory, HttpStatus.OK);
+    public ResponseEntity<Object> updateCategory(@PathVariable Long id, @RequestBody categoryDTO category) {
+	 Category updatedcategory = categoryServiceImpl.updateCategory(id, category);
+	 return ResponseHandler.generateResponse("Category updated", HttpStatus.OK, updatedcategory);
     }
 	
 	@DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
-		categoryService.deleteCategotyById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Object> deleteCategory(@PathVariable Long id) {
+		categoryServiceImpl.deleteCategoryById(id);
+        return ResponseHandler.generateResponse("Category deleted", HttpStatus.OK, id);
     }
 
 }

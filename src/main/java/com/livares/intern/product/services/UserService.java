@@ -22,4 +22,9 @@ public interface UserService {
 
 	// updating a specific user
 	public Users updateUser(Long id, UsersDTO user);
+	
+	//registering a new user
+	public Users registerNewUser(UsersDTO user);
+	
+	
 }

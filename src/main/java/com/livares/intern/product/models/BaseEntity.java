@@ -18,10 +18,9 @@ import lombok.Setter;
 public class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private Long id;
-	
+
 	@CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private Date createdAt;
+	@Column(name = "created_at", updatable = false)
+	private Date createdAt;
 }
