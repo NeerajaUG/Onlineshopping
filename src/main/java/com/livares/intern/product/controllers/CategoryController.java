@@ -38,10 +38,7 @@ public class CategoryController {
 	@GetMapping("/{id}")
     public ResponseEntity<Object> getCategoryById(@PathVariable Long id) {
 		List<categoryDTO> category = categoryServiceImpl.getCategoryById(id);
-		if(category!=null)
 			return ResponseHandler.generateResponse("Category by Id", HttpStatus.OK,category);
-		else 
-			return ResponseHandler.generateResponse("Specified category does not exists", HttpStatus.NOT_FOUND,category);
     }
 	
 	@PostMapping("/create")

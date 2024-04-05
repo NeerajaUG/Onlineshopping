@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.livares.intern.product.dto.ProductsDTO;
+import com.livares.intern.product.exception.CustomException;
+import com.livares.intern.product.exception.ErrorCode;
 import com.livares.intern.product.models.Products;
 import com.livares.intern.product.models.UserProductCart;
 import com.livares.intern.product.models.Users;
@@ -25,7 +27,11 @@ public class UserProductCartServiceImpl implements UsersProductCartServices{
 	//View cart 
 	@Override
 	public List<ProductsDTO> viewCartDataById(Long id){ 
-		return userProductCartRepository.ViewCartDataById1(id);
+		if(userProductCartRepository.existsById(id))
+			return userProductCartRepository.ViewCartDataById1(id);
+		else {
+			throw new CustomException(ErrorCode.NOT_FOUND,"No user exists with id: "+id);
+		}
 	}
 	
 	//add to cart
@@ -45,8 +51,12 @@ public class UserProductCartServiceImpl implements UsersProductCartServices{
 	
 	//delete cart data
 	@Override
-	public void deleteUserProductCart(Long id) {
-		userProductCartRepository.deleteById(id);
+	public void removeFromCart(Long id) {
+		if(userProductCartRepository.existsById(id))
+			userProductCartRepository.deleteById(id);
+		else {
+			throw new CustomException(ErrorCode.NOT_FOUND,"No product exists with id: "+id);
+		}
 	
 	}
 	

@@ -16,7 +16,7 @@ public interface UsersProductCartServices {
 	public UserProductCart addUserProductCart(Long userid, Long productid);
 	
 	//delete cart data
-	public void deleteUserProductCart(Long id);
+	public void removeFromCart(Long id);
 		
 
 }

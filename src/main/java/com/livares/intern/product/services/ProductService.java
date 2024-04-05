@@ -17,7 +17,7 @@ public interface ProductService {
 	public Products createProducts(ProductsDTO product);
 	
 	//to delete a field in product	
-	public void  deleteProduct(Long id);
+	boolean  deleteProduct(Long id);
 	
 	//to update a field in product
 	public Products updateProduct(Long id,ProductsDTO product);

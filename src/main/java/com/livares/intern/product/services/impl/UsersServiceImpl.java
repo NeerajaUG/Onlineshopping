@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.livares.intern.product.dto.UsersDTO;
+import com.livares.intern.product.exception.CustomException;
+import com.livares.intern.product.exception.ErrorCode;
 import com.livares.intern.product.models.Users;
 import com.livares.intern.product.repository.UsersRepository;
 import com.livares.intern.product.services.UserService;
@@ -29,7 +31,11 @@ public class UsersServiceImpl implements UserService {
 	// retrieving specific user in the table
 	@Override
 	public Optional<Users> getUserById(Long id) {
-		return usersRepository.findById(id);
+		if(usersRepository.existsById(id))
+			return usersRepository.findById(id);
+		else {
+			throw new CustomException(ErrorCode.NOT_FOUND,"User with id: "+id+"does not exists");
+		}
 	}
 
 	// creating a new user
@@ -46,8 +52,12 @@ public class UsersServiceImpl implements UserService {
 
 	// deleting a user
 	@Override
-	public void deleteUser(Long id) {  
-		usersRepository.deleteById(id);
+	public void deleteUser(Long id) { 
+		if(usersRepository.existsById(id))
+			usersRepository.deleteById(id);
+		else {
+			throw new CustomException(ErrorCode.NOT_FOUND, "User with id: "+id+"does not exists");
+		}
 	}
 
 	// updating a specific user
@@ -71,7 +81,7 @@ public class UsersServiceImpl implements UserService {
 	public Users registerNewUser(UsersDTO user) {
 		Optional<Users> optionalUser = usersRepository.findByUsername(user.getUsername());
 		if(optionalUser.isPresent())
-				throw new RuntimeException("User is an already existing user...");
+				throw new CustomException(ErrorCode.CONFLICT,"User is an already existing user...");
 		else{
 			Users registernewUser = new Users(); 
 			registernewUser.setFirstName(user.getFirstName());

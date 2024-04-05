@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.livares.intern.product.dto.ProductsDTO;
+import com.livares.intern.product.exception.CustomException;
+import com.livares.intern.product.exception.ErrorCode;
 import com.livares.intern.product.models.Products;
 import com.livares.intern.product.models.Users;
 import com.livares.intern.product.repository.ProductRepository;
@@ -43,12 +45,12 @@ public class ProductsController {
 	}
 	
 	@GetMapping("/{id}")
-    public ResponseEntity<Object> getProductById(@PathVariable Long productid) {
+    public ResponseEntity<Object> getProductById(@RequestParam Long productid) {
         Optional<Products> product = productsService.getProductById(productid);
-        if(product != null)
+//        if(product != null)
         	return ResponseHandler.generateResponse("Requested Product", HttpStatus.FOUND, product);
-        else 
-			return ResponseHandler.generateResponse("Product Not Found", HttpStatus.NOT_FOUND, product);
+//        else 
+//			return ResponseHandler.generateResponse("Product Not Found", HttpStatus.NOT_FOUND, product);
 		
     }
 	
@@ -59,15 +61,18 @@ public class ProductsController {
     }
 	
 	@PutMapping("/update/{id}")
-    public ResponseEntity<Object> updateProducts(@PathVariable Long id, @RequestBody ProductsDTO product) {
+    public ResponseEntity<Object> updateProducts(@RequestParam Long id, @RequestBody ProductsDTO product) {
 	 Products updatedProduct = productsService.updateProduct(id, product);
         return ResponseHandler.generateResponse("Product Created", HttpStatus.OK, updatedProduct);
     }
 	
 	@DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable Long id) {
-		productsService.deleteProduct(id);
-        return ResponseHandler.generateResponse("Product deleted", HttpStatus.OK, id);
+		if(productsService.deleteProduct(id))
+			return ResponseHandler.generateResponse("Product deleted", HttpStatus.OK, id);
+		else {
+			throw new CustomException(ErrorCode.NOT_FOUND,"Product by id: "+id+"does not exist");
+		}
     }
 	
 	@GetMapping("/viewAllproductsByPage")

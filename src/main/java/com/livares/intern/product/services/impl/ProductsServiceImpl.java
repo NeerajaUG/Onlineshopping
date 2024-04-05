@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.livares.intern.product.dto.ProductsDTO;
+import com.livares.intern.product.exception.CustomException;
+import com.livares.intern.product.exception.ErrorCode;
 import com.livares.intern.product.models.Category;
 import com.livares.intern.product.models.Products;
 import com.livares.intern.product.repository.CategoryRepository;
@@ -33,7 +35,11 @@ public class ProductsServiceImpl implements ProductService {
 	@Override
 	// retrieving specific product in the table
 	public Optional<Products> getProductById(Long id) {
-		return productRepository.findById(id);
+		if(productRepository.existsById(id))
+			return productRepository.findById(id);
+		else {
+			throw new CustomException(ErrorCode.NOT_FOUND, "Product by id: "+id+" does not exists");
+		}
 	}
 
 	@Override
@@ -53,8 +59,14 @@ public class ProductsServiceImpl implements ProductService {
 
 	@Override
 	// deleting a product
-	public void deleteProduct(Long id) {
-		productRepository.deleteById(id);
+	public boolean deleteProduct(Long id) {
+		if(productRepository.existsById(id)) {
+			productRepository.deleteById(id);
+			return true;
+		}
+		else {
+			return false;
+		}	
 	}
 
 	@Override
@@ -73,7 +85,7 @@ public class ProductsServiceImpl implements ProductService {
 			existingProduct.setQuantity(product.getQuantity());
 			return productRepository.save(existingProduct);
 		} else {
-			throw new RuntimeException("Product not found with id: " + id);
+			throw new CustomException(ErrorCode.NOT_FOUND, "The product with the id not found: "+id);
 		}
 	}
 	

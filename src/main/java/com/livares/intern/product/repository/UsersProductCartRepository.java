@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.livares.intern.product.dto.ProductsDTO;
 import com.livares.intern.product.models.Products;
 import com.livares.intern.product.models.UserProductCart;
+import com.livares.intern.product.models.Users;
+
 
 @Repository
 public interface UsersProductCartRepository extends JpaRepository<UserProductCart, Long> {
@@ -31,4 +33,5 @@ public interface UsersProductCartRepository extends JpaRepository<UserProductCar
 			+ " join com.livares.intern.product.models.Users u on  u.id = upc.users.id " + " where upc.users.id = :id")
 	public List<ProductsDTO> ViewCartDataById1(@Param("id") Long id);
 
-}
+	// List<UserProductCart> findByUsersAndProducts(Users users, Products products);
+	}

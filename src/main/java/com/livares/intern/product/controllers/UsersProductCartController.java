@@ -40,9 +40,10 @@ public class UsersProductCartController {
 		return ResponseHandler.generateResponse("Items added to cart", HttpStatus.CREATED, addToCart);
 	}
 
+	//remove from cart
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteCart(@PathVariable Long id) {
-		userProductCartService.deleteUserProductCart(id);
+	public ResponseEntity<Object> deleteFromCart(@RequestParam Long id) {
+		userProductCartService.removeFromCart(id);
 		return ResponseHandler.generateResponse("Item deleted", HttpStatus.OK,id);
 	}
 
