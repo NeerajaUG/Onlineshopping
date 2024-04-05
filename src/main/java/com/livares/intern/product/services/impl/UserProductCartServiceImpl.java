@@ -14,6 +14,7 @@ import com.livares.intern.product.models.Products;
 import com.livares.intern.product.models.UserProductCart;
 import com.livares.intern.product.models.Users;
 import com.livares.intern.product.repository.UsersProductCartRepository;
+import com.livares.intern.product.repository.UsersRepository;
 import com.livares.intern.product.services.UsersProductCartServices;
 
 @Service
@@ -21,6 +22,12 @@ public class UserProductCartServiceImpl implements UsersProductCartServices{
 	
 	@Autowired
 	private UsersProductCartRepository userProductCartRepository;
+	
+//	@Autowired
+//	private UsersRepository usersRepository;
+//	
+//	@Autowired
+//	private ProductRepository  
 	
 	
 	
@@ -37,6 +44,10 @@ public class UserProductCartServiceImpl implements UsersProductCartServices{
 	//add to cart
 	@Override  
 	public UserProductCart addUserProductCart(Long userid,Long productid) {
+		
+//		Optional<Users> optionalUser = usersRepository.findById(userid);
+//        Optional<Products> optionalProduct = productRepository.findById(productid);
+        
 		Users users = new Users();
 		users.setId(userid);
 		
