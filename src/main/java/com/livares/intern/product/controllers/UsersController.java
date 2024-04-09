@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.livares.intern.product.dto.UsersDTO;
 import com.livares.intern.product.models.Users;
-import com.livares.intern.product.response.ResponseHandler;
+import com.livares.intern.product.response.CustomResponseHandler;
 import com.livares.intern.product.services.UserService;
 
 @RestController
@@ -31,41 +31,41 @@ public class UsersController {
 	@GetMapping
 	public ResponseEntity<Object> getAllUsers() {
 		List<Users> users = usersService.getallUsers();
-		return ResponseHandler.generateResponse("All Users",HttpStatus.OK,users);
+		return CustomResponseHandler.generateResponse("All Users",HttpStatus.OK,users);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getUserById(@PathVariable Long userid) {
 		Optional<Users> user = usersService.getUserById(userid);
 		if(user!=null)
-			return ResponseHandler.generateResponse("No such user", HttpStatus.NOT_FOUND, user);
+			return CustomResponseHandler.generateResponse("No such user", HttpStatus.NOT_FOUND, user);
 		else
-			return ResponseHandler.generateResponse("Requested Product", HttpStatus.FOUND, user);
+			return CustomResponseHandler.generateResponse("Requested Product", HttpStatus.FOUND, user);
 	}
 
 	@PostMapping("/create")
 	public ResponseEntity<Object> createUser(@RequestBody UsersDTO user) {
 		Users createUser = usersService.createUsers(user);
-		return ResponseHandler.generateResponse("User Created", HttpStatus.CREATED, createUser);
+		return CustomResponseHandler.generateResponse("User Created", HttpStatus.CREATED, createUser);
 	}
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody UsersDTO user) {
 		Users updateduser = usersService.updateUser(id, user);
-		return ResponseHandler.generateResponse("User updated", HttpStatus.OK, updateduser);
+		return CustomResponseHandler.generateResponse("User updated", HttpStatus.OK, updateduser);
 	}
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteuser(@RequestParam Long userid) {
 		usersService.deleteUser(userid);
-		return ResponseHandler.generateResponse("deleted user", HttpStatus.OK, userid);
+		return CustomResponseHandler.generateResponse("deleted user", HttpStatus.OK, userid);
 	}
 	
 	//to handle registering...
 	@PostMapping("/register")
 	public ResponseEntity<Object> registerUser(@RequestBody UsersDTO user){
 		Users registeredUsers = usersService.registerNewUser(user);
-		return ResponseHandler.generateResponse("User registered", HttpStatus.OK, registeredUsers);
+		return CustomResponseHandler.generateResponse("User registered", HttpStatus.OK, registeredUsers);
 		
 	}
 

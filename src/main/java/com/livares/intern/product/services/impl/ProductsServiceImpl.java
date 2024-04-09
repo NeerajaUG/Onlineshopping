@@ -3,7 +3,6 @@ package com.livares.intern.product.services.impl;
 import java.util.List;
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,16 +34,16 @@ public class ProductsServiceImpl implements ProductService {
 	@Override
 	// retrieving specific product in the table
 	public Optional<Products> getProductById(Long id) {
-		if(productRepository.existsById(id))
+		if (productRepository.existsById(id))
 			return productRepository.findById(id);
 		else {
-			throw new CustomException(ErrorCode.NOT_FOUND, "Product by id: "+id+" does not exists");
+			throw new CustomException(ErrorCode.NOT_FOUND, "Product by id: " + id + " does not exists");
 		}
 	}
 
 	@Override
 	// creating a new product
-	public Products createProducts(ProductsDTO product){
+	public Products createProducts(ProductsDTO product) {
 		Products newproduct = new Products();
 		newproduct.setProductName(product.getName());
 		newproduct.setProductDesc(product.getDescription());
@@ -54,19 +53,18 @@ public class ProductsServiceImpl implements ProductService {
 		Category category = categoryRepo.findById(product.getCategoryid()).get();
 		newproduct.setCategory(category);
 		return productRepository.save(newproduct);
-		
+
 	}
 
 	@Override
 	// deleting a product
 	public boolean deleteProduct(Long id) {
-		if(productRepository.existsById(id)) {
+		if (productRepository.existsById(id)) {
 			productRepository.deleteById(id);
 			return true;
-		}
-		else {
+		} else {
 			return false;
-		}	
+		}
 	}
 
 	@Override
@@ -85,14 +83,13 @@ public class ProductsServiceImpl implements ProductService {
 			existingProduct.setQuantity(product.getQuantity());
 			return productRepository.save(existingProduct);
 		} else {
-			throw new CustomException(ErrorCode.NOT_FOUND, "The product with the id not found: "+id);
+			throw new CustomException(ErrorCode.NOT_FOUND, "The product with the id not found: " + id);
 		}
 	}
-	
-	public Page<Products> getAllProducts(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        return productRepository.findAll(pageRequest);
-    }
 
+	public Page<Products> getAllProducts(int page, int size) {
+		PageRequest pageRequest = PageRequest.of(page, size);
+		return productRepository.findAll(pageRequest);
+	}
 
 }

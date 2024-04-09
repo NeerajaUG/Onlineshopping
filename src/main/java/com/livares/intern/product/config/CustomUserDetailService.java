@@ -24,8 +24,7 @@ public class CustomUserDetailService implements UserDetailsService {
 		Optional<Users> user = usersRepository.findByUsername(username);
 		if (user.isPresent()) {
 
-			return User.builder().username(user.get().getUsername()).password(user.get().getPassword()).roles("USER")
-					.build();
+			return User.builder().username(user.get().getUsername()).password(user.get().getPassword()).roles().build();
 
 		} else {
 			throw new UsernameNotFoundException("Not such user found!!");

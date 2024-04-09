@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.livares.intern.product.dto.categoryDTO;
 import com.livares.intern.product.models.Category;
 import com.livares.intern.product.models.Products;
-import com.livares.intern.product.response.ResponseHandler;
+import com.livares.intern.product.response.CustomResponseHandler;
 import com.livares.intern.product.services.CategoryServices;
 import com.livares.intern.product.services.impl.CategoryServiceImpl;
 
@@ -31,32 +31,32 @@ public class CategoryController {
 	@GetMapping
 	public ResponseEntity<Object> getAllCategory(){
 		List<categoryDTO> category = categoryServiceImpl.getAllCategories();
-		return ResponseHandler.generateResponse("All Category", HttpStatus.OK,category);
+		return CustomResponseHandler.generateResponse("All Category", HttpStatus.OK,category);
 		//return new ResponseEntity<>(categoryServiceImpl.getAllCategories(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
     public ResponseEntity<Object> getCategoryById(@PathVariable Long id) {
 		List<categoryDTO> category = categoryServiceImpl.getCategoryById(id);
-			return ResponseHandler.generateResponse("Category by Id", HttpStatus.OK,category);
+			return CustomResponseHandler.generateResponse("Category by Id", HttpStatus.OK,category);
     }
 	
 	@PostMapping("/create")
     public ResponseEntity<Object> createCategory(@RequestBody categoryDTO category) {
 	 Category  createCategory = categoryServiceImpl.createCategory(category);
-        return ResponseHandler.generateResponse("Category created", HttpStatus.CREATED, createCategory);
+        return CustomResponseHandler.generateResponse("Category created", HttpStatus.CREATED, createCategory);
     }
 	
 	@PutMapping("/update/{id}")
     public ResponseEntity<Object> updateCategory(@PathVariable Long id, @RequestBody categoryDTO category) {
 	 Category updatedcategory = categoryServiceImpl.updateCategory(id, category);
-	 return ResponseHandler.generateResponse("Category updated", HttpStatus.OK, updatedcategory);
+	 return CustomResponseHandler.generateResponse("Category updated", HttpStatus.OK, updatedcategory);
     }
 	
 	@DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteCategory(@PathVariable Long id) {
 		categoryServiceImpl.deleteCategoryById(id);
-        return ResponseHandler.generateResponse("Category deleted", HttpStatus.OK, id);
+        return CustomResponseHandler.generateResponse("Category deleted", HttpStatus.OK, id);
     }
 
 }
